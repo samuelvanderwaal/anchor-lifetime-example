@@ -6,7 +6,7 @@ declare_id!("52XbisxVLPiSTV7voRXMkRjX31yw9XwZJJPQSi81tVkV");
 pub mod lifetime {
     use super::*;
 
-    pub fn do_thing(ctx: Context<DoThing>) -> Result<()> {
+    pub fn do_thing<'info>(ctx: Context<'_, 'info, 'info, '_, DoThing<'info>>) -> Result<()> {
         handle(ctx)
     }
 }
@@ -35,7 +35,7 @@ pub struct DoThing<'info> {
     pub account1: UncheckedAccount<'info>,
 }
 
-pub fn handle(ctx: Context<DoThing>) -> Result<()> {
+pub fn handle<'info>(ctx: Context<'_, 'info, 'info, '_, DoThing<'info>>) -> Result<()> {
     let account1 = Account::<Account1>::try_from(&ctx.accounts.account1)?;
 
     msg!("other_account.value: {}", account1.value);
